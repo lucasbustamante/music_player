@@ -22,9 +22,11 @@ class _HomePageState extends State<HomePage> {
     /*prefix: 'audios/' só para caso tenha uma pasta dentro de assets*/);
 
   bool primeiroPlay = true;
+  double volume = 0.5;
 
   _executar() async {
     if(primeiroPlay){
+      audioPlayer.setVolume(volume);
       audioPlayer = await audioCache.play("musica.mp3");
       primeiroPlay = false;
     }else{
@@ -54,6 +56,17 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Slider(
+                value: volume,
+                min: 0,
+                max: 1,
+                divisions: 6,
+                onChanged: (novoVolume){
+                  setState(() {
+                    volume = novoVolume;
+                  });
+                  audioPlayer.setVolume(novoVolume);
+                }),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
